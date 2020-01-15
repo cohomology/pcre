@@ -51,7 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
   (PCRE2_SUBSTITUTE_EXTENDED|PCRE2_SUBSTITUTE_GLOBAL| \
    PCRE2_SUBSTITUTE_LITERAL|PCRE2_SUBSTITUTE_MATCHED| \
    PCRE2_SUBSTITUTE_OVERFLOW_LENGTH|PCRE2_SUBSTITUTE_UNKNOWN_UNSET| \
-   PCRE2_SUBSTITUTE_UNSET_EMPTY)
+   PCRE2_SUBSTITUTE_UNSET_EMPTY|PCRE2_SUBSTITUTE_MATCH_ONLY)
 
 
 
@@ -320,7 +320,10 @@ if (start_offset > length)
   rc = PCRE2_ERROR_BADOFFSET;
   goto EXIT;
   }
-CHECKMEMCPY(subject, start_offset);
+else if ((suboptions & PCRE2_SUBSTITUTE_MATCH_ONLY) == 0)
+  {
+  CHECKMEMCPY(subject, start_offset);
+  }
 
 /* Loop for global substituting. If PCRE2_SUBSTITUTE_MATCHED is set, the first
 match is taken from the match_data that was passed in. */
@@ -904,9 +907,11 @@ do
   } while ((suboptions & PCRE2_SUBSTITUTE_GLOBAL) != 0);  /* Repeat "do" loop */
 
 /* Copy the rest of the subject. */
-
-fraglength = length - start_offset;
-CHECKMEMCPY(subject + start_offset, fraglength);
+if ((suboptions & PCRE2_SUBSTITUTE_MATCH_ONLY) == 0)
+  {
+  fraglength = length - start_offset;
+  CHECKMEMCPY(subject + start_offset, fraglength);
+  }
 temp[0] = 0;
 CHECKMEMCPY(temp , 1);
 
