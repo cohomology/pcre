@@ -104,6 +104,13 @@
 #define SLJIT_PROT_EXECUTABLE_ALLOCATOR 0
 #endif
 
+/* When SLJIT_SIMPLE_ALLOCATOR is enabled SLJIT uses
+   the user supplied allocator for memory allocation. */
+#ifndef SLJIT_SIMPLE_ALLOCATOR
+/* Disabled by default. */
+#define SLJIT_SIMPLE_ALLOCATOR 0
+#endif 
+
 #endif
 
 /* Force cdecl calling convention even if a better calling

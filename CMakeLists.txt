@@ -180,6 +180,9 @@ SET(PCRE2_SUPPORT_JIT OFF CACHE BOOL
 SET(PCRE2_SUPPORT_JIT_SEALLOC OFF CACHE BOOL
     "Enable SELinux compatible execmem allocator in JIT (experimental).")
 
+SET(PCRE2_SUPPORT_JIT_SIMPLE_ALLOC OFF CACHE BOOL
+    "Enable usage of user supplied allocator in JIT (experimental).") 
+
 SET(PCRE2GREP_SUPPORT_JIT ON CACHE BOOL
     "Enable use of Just-in-time compiling in pcre2grep.")
 
@@ -306,6 +309,10 @@ ENDIF(PCRE2_SUPPORT_JIT)
 IF(PCRE2_SUPPORT_JIT_SEALLOC)
         SET(SLJIT_PROT_EXECUTABLE_ALLOCATOR 1)
 ENDIF(PCRE2_SUPPORT_JIT_SEALLOC)
+
+IF(PCRE2_SUPPORT_JIT_SIMPLE_ALLOC)
+        SET(SLJIT_SIMPLE_ALLOCATOR 1) 
+ENDIF(PCRE2_SUPPORT_JIT_SIMPLE_ALLOC) 
 
 IF(PCRE2GREP_SUPPORT_JIT)
         SET(SUPPORT_PCRE2GREP_JIT 1)
@@ -813,6 +820,7 @@ IF(PCRE2_SHOW_REPORT)
   MESSAGE(STATUS "  Build 32 bit PCRE2 library ...... : ${PCRE2_BUILD_PCRE2_32}")
   MESSAGE(STATUS "  Enable JIT compiling support .... : ${PCRE2_SUPPORT_JIT}")
   MESSAGE(STATUS "  Use SELinux allocator in JIT .... : ${PCRE2_SUPPORT_JIT_SEALLOC}")
+  MESSAGE(STATUS "  Use simple allocator in JIT ..... : ${PCRE2_SUPPORT_JIT_SIMPLE_ALLOC}")
   MESSAGE(STATUS "  Enable Unicode support .......... : ${PCRE2_SUPPORT_UNICODE}")
   MESSAGE(STATUS "  Newline char/sequence ........... : ${PCRE2_NEWLINE}")
   MESSAGE(STATUS "  \\R matches only ANYCRLF ......... : ${PCRE2_SUPPORT_BSR_ANYCRLF}")
